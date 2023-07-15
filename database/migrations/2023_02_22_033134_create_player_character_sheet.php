@@ -13,24 +13,31 @@ class CreatePlayerCharacterSheet extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('player_char_skill');
+        Schema::dropIfExists('player_char_action');
+        Schema::dropIfExists('player_char_background');
+        Schema::dropIfExists('player_char_equipment');
+        Schema::dropIfExists('player_char');
         Schema::create('player_char', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('acc');
             $table->char('chrName', 127);
             $table->char('documentImage', 255)->nullable();
             $table->char('chrOrder', 31);
-            $table->tinyInteger('intStrength');
-            $table->tinyInteger('intDexterity');
-            $table->tinyInteger('intConstitution');
-            $table->tinyInteger('intIntelligence');
-            $table->tinyInteger('intWisdom');
-            $table->tinyInteger('intCharisma');
+            $table->tinyInteger('intBody');
+            $table->tinyInteger('intSoul');
+            $table->tinyInteger('intInstinct');
+            $table->tinyInteger('intMind');
+            $table->tinyInteger('intSocial');
+            $table->tinyInteger('intAbsMod');
+            $table->tinyInteger('intDmgMod');
+            $table->date('dttDeleted')->nullable(true);
         });
 
         Schema::create('player_char_background', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('acc');
-            $table->unsignedInteger('fkChar');
+            $table->unsignedBigInteger('fkChar');
             $table->text('txtMotivation');
             $table->text('txtHistory');
             $table->text('txtBehaviors');
@@ -46,8 +53,8 @@ class CreatePlayerCharacterSheet extends Migration
         Schema::create('player_char_action', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('acc');
-            $table->unsignedInteger('fkChar');
-            $table->unsignedInteger('fkAction');
+            $table->unsignedBigInteger('fkChar');
+            $table->unsignedBigInteger('fkAction');
 
             $table->foreign('fkChar')
                 ->references('id')
@@ -57,7 +64,7 @@ class CreatePlayerCharacterSheet extends Migration
         Schema::create('player_char_skill', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('acc');
-            $table->unsignedInteger('fkChar');
+            $table->unsignedBigInteger('fkChar');
             $table->unsignedInteger('fkSkill');
             $table->tinyInteger('intLevel');
 
@@ -69,7 +76,7 @@ class CreatePlayerCharacterSheet extends Migration
         Schema::create('player_char_equipment', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('acc');
-            $table->unsignedInteger('fkChar');
+            $table->unsignedBigInteger('fkChar');
             $table->unsignedInteger('fkEquipment');
             $table->tinyInteger('intScale');
             $table->tinyInteger('intStrength');
@@ -95,6 +102,5 @@ class CreatePlayerCharacterSheet extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('player_character_sheet');
     }
 }
